@@ -1,24 +1,55 @@
-def cryptomachine():
-    keys = 'abcdefghijklmnopqrstuvwxyz123456789 !'
-    Value = keys[-1] + keys[0:-1]
-
-    encryptionDictionary = dict(zip(keys, Value))
-    decryptionDictionary = dict(zip(Value, keys))
-
-    message = input("Please enter a messege to convey: ")
-    mode = input("Please select an encryption mode : Encode(E) OR Decode(D)")
-
-    if mode.upper() == 'E':
-        newMessage = ''.join([encryptionDictionary[letter]
-                             for letter in message.lower()])
-
-    elif mode.upper() == 'D':
-        newMessage = ''.join([decryptionDictionary[letter]
-                             for letter in message.lower()])
-    else:
-        print('Please enter an Valid choice, Decrypt(D) OR Encrypt(E)')
-
-    return newMessage.capitalize()
+# Python for RSA asymmetric cryptographic algorithm.
+# For demonstration, values are
+# relatively small compared to practical application
+import math
 
 
-print(cryptomachine())
+def gcd(a, h):
+	temp = 0
+	while(1):
+		temp = a % h
+		if (temp == 0):
+			return h
+		a = h
+		h = temp
+
+
+p = 3
+q = 7
+n = p*q
+e = 2
+phi = (p-1)*(q-1)
+
+while (e < phi):
+
+	# e must be co-prime to phi and
+	# smaller than phi.
+	if(gcd(e, phi) == 1):
+		break
+	else:
+		e = e+1
+
+# Private key (d stands for decrypt)
+# choosing d such that it satisfies
+# d*e = 1 + k * totient
+
+k = 2
+d = (1 + (k*phi))/e
+
+# Message to be encrypted
+msg = 12.0
+
+print("Message data = ", msg)
+
+# Encryption c = (msg ^ e) % n
+c = pow(msg, e)
+c = math.fmod(c, n)
+print("Encrypted data = ", c)
+
+# Decryption m = (c ^ d) % n
+m = pow(c, d)
+m = math.fmod(m, n)
+print("Original Message Sent = ", m)
+
+
+# This code is contributed by Pranay Arora.
